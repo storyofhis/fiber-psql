@@ -114,7 +114,8 @@ func (r *Repository) GetBookByID(context *fiber.Ctx) error {
 		)
 		return nil
 	}
-	err := r.DB.Where("id = ?", id).First(bookModel).Error
+	err := r.DB.Where("id = ?", id).First(&bookModel).Error
+	// err := r.DB.Find(bookModel).Error
 	if err != nil {
 		context.Status(http.StatusBadRequest).JSON(
 			&fiber.Map{
@@ -133,9 +134,9 @@ func (r *Repository) GetBookByID(context *fiber.Ctx) error {
 }
 func (r *Repository) SetupRoutes(app *fiber.App) {
 	api := app.Group("/api")
-	api.Post("/create_boks", r.CreateBook)
+	api.Post("/create_books", r.CreateBook)
 	api.Delete("/delete_book/:id", r.DeleteBook)
-	api.Get("/get_book/:id", r.GetBookByID)
+	api.Get("/get_books/:id", r.GetBookByID)
 	api.Get("/get_books", r.GetBooks)
 }
 
